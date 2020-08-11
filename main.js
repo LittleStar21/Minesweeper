@@ -1,9 +1,12 @@
+const width = 30;
+const height = 16;
 const board = document.getElementById("board");
+let firstClick = true;
 
 window.onload = function () {
 	document.addEventListener("contextmenu", (event) => event.preventDefault());
-	generateBoard();
-	generateRandMines();
+	generateBoardAnimation(0);
+	playMinesweeper();
 };
 
 function isMine(value) {
@@ -14,34 +17,28 @@ function getRandInt(minInt, maxInt) {
 	return Math.floor(Math.random() * (maxInt - minInt + 1) + minInt);
 }
 
-function generateBoard() {
-	board.innerHTML = "";
-	for (let i = 0; i < height; i++) {
-		let row = board.insertRow(i);
-		for (let j = 0; j < width; j++) {
-			let cell = row.insertCell(j);
-			cell.setAttribute("width", "25px");
-			cell.setAttribute("height", "25px");
-			cell.onmousedown = function (event) {
-				if (event.button === 0) {
-					leftClickCell(cell);
-				} else if (event.button === 2) {
-					rightClickCell(cell);
-				}
-			};
-			defaultCell(cell);
-		}
-	}
-}
+function generateBoardAnimation(i) {
+	if (i >= height) return;
 
-function generateRandMines() {
-	for (let i = 0; i < height; i++) {
-		let tempRow = [];
-		for (let j = 0; j < width; j++) {
-			tempRow.push(getRandInt(0, 9));
-		}
-		answerBoard.push(tempRow);
+	const row = board.insertRow(i);
+	for (let j = 0; j < width; j++) {
+		const cell = row.insertCell(j);
+		cell.setAttribute("width", "30px");
+		cell.setAttribute("height", "30px");
+		cell.onmousedown = function (event) {
+			if (event.button === 0) {
+				leftClickCell(cell);
+			} else if (event.button === 2) {
+				rightClickCell(cell);
+			}
+		};
+		defaultCell(cell);
 	}
+	i++;
+
+	setTimeout(function (a) {
+		generateBoardAnimation(i);
+	}, 30);
 }
 
 function leftClickCell(cell) {
@@ -50,7 +47,6 @@ function leftClickCell(cell) {
 	const row = cell.parentNode.rowIndex;
 	const col = cell.cellIndex;
 	if (isMine(answerBoard[row][col])) {
-		alert("lose");
 		gameOver();
 	} else {
 		numberCell(cell);
@@ -106,6 +102,14 @@ function mineGameOverCell(cell) {
 }
 
 function gameOver() {
+	for (let i = 0; i < height; i++) {
+		for (let j = 0; j < width; j++) {
+			const cell = board.rows[i].cells[j];
+			cell.onmousedown = function (event) {
+				return;
+			};
+		}
+	}
 	showAllMinesFromTop(0, 0);
 	showAllMinesFromBot(height - 1, width - 1);
 }
@@ -116,7 +120,7 @@ function showAllMinesFromTop(i, j) {
 		i++;
 	}
 	if (i > Math.floor(height / 2)) {
-		showAllNumbers(0, 0);
+		showNumberSpiral(0, 0, height - 1, width - 1, 0, 2);
 		return;
 	}
 
@@ -151,20 +155,78 @@ function showAllMinesFromBot(i, j) {
 	}, 5);
 }
 
-function showAllNumbers(i, j) {
-	if (j >= width) {
-		j = 0;
-		i++;
+// 0: right, 1: down, 2: left, 3: up
+let leftBorder = -1,
+	rightBorder = width,
+	topBorder = -1,
+	bottomBorder = height;
+function showNumberSpiral(i, j, x, y, dir1, dir2) {
+	if (leftBorder >= rightBorder && topBorder >= bottomBorder) {
+		return;
 	}
-	if (i >= height) return;
 
-	const cell = board.rows[i].cells[j];
+	const cell1 = board.rows[i].cells[j];
+	const cell2 = board.rows[x].cells[y];
 	if (!isMine(answerBoard[i][j])) {
-		numberCell(cell);
+		numberCell(cell1);
 	}
-	j++;
+	if (!isMine(answerBoard[x][y])) {
+		numberCell(cell2);
+	}
 
-	setTimeout(function (a, b) {
-		showAllNumbers(i, j);
+	if (dir1 === 0) {
+		j++;
+		if (j === rightBorder - 1) {
+			topBorder++;
+			dir1 = 1;
+		}
+	} else if (dir1 === 1) {
+		i++;
+		if (i === bottomBorder - 1) {
+			rightBorder--;
+			dir1 = 2;
+		}
+	} else if (dir1 === 2) {
+		j--;
+		if (j === leftBorder + 1) {
+			bottomBorder--;
+			dir1 = 3;
+		}
+	} else {
+		i--;
+		if (i === topBorder + 1) {
+			leftBorder++;
+			dir1 = 0;
+		}
+	}
+
+	if (dir2 === 0) {
+		y++;
+		if (y === rightBorder - 1) {
+			topBorder++;
+			dir2 = 1;
+		}
+	} else if (dir2 === 1) {
+		x++;
+		if (x === bottomBorder - 1) {
+			rightBorder--;
+			dir2 = 2;
+		}
+	} else if (dir2 === 2) {
+		y--;
+		if (y === leftBorder + 1) {
+			bottomBorder--;
+			dir2 = 3;
+		}
+	} else {
+		x--;
+		if (x === topBorder + 1) {
+			leftBorder++;
+			dir2 = 0;
+		}
+	}
+
+	setTimeout(function (a, b, c, d, e, f) {
+		showNumberSpiral(i, j, x, y, dir1, dir2);
 	}, 3);
 }

@@ -15,9 +15,9 @@ a {
 }
 
 a:hover {
-	color: orange;
-	transition: all 0.8s ease;
+	color: #ffa500;
 	cursor: pointer;
+	transition: all 0.8s ease-out;
 }
 
 .timer {
@@ -47,7 +47,29 @@ td {
 }
 
 .hidden {
-	background-color: #dcdcdc;
+	animation-name: hiddenAnimation;
+	animation-duration: 0.3s;
+	animation-timing-function: ease-out;
+	animation-direction: alternate;
+	animation-fill-mode: forwards;
+	animation-play-state: running;
+}
+
+@keyframes hiddenAnimation {
+	0% {
+		transform: scale(0.3);
+		background-color: #008080;
+	}
+
+	50% {
+		transform: scale(1.2);
+		background-color: #00ced1;
+	}
+
+	100% {
+		transform: scale(1);
+		background-color: #40e0d0;
+	}
 }
 
 .number {

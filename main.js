@@ -1,17 +1,17 @@
-// Beginner 9x9: 10 mines
-// Intermediate 16x16: 40 mines
-// Advanced 24x24: 99 mines
-const width = 50;
-const height = 25;
-const numOfMines = 99;
 const board = document.getElementById("board");
 
-const answerBoard = [];
-
-function startGame() {
+window.onload = function () {
 	document.addEventListener("contextmenu", (event) => event.preventDefault());
 	generateBoard();
-	generateMines();
+	generateRandMines();
+};
+
+function isMine(value) {
+	return value === 9;
+}
+
+function getRandInt(minInt, maxInt) {
+	return Math.floor(Math.random() * (maxInt - minInt + 1) + minInt);
 }
 
 function generateBoard() {
@@ -34,14 +34,13 @@ function generateBoard() {
 	}
 }
 
-function generateMines() {
+function generateRandMines() {
 	for (let i = 0; i < height; i++) {
-		let newRow = [];
+		let tempRow = [];
 		for (let j = 0; j < width; j++) {
-			let newCol = new Grid(getRandInt(0, 9));
-			newRow.push(newCol);
+			tempRow.push(getRandInt(0, 9));
 		}
-		answerBoard.push(newRow);
+		answerBoard.push(tempRow);
 	}
 }
 
@@ -50,9 +49,9 @@ function leftClickCell(cell) {
 
 	const row = cell.parentNode.rowIndex;
 	const col = cell.cellIndex;
-	if (answerBoard[row][col].isMine()) {
+	if (isMine(answerBoard[row][col])) {
 		alert("lose");
-		animateGameOver(0, 0);
+		gameOver();
 	} else {
 		numberCell(cell);
 	}
@@ -80,7 +79,7 @@ function defaultCell(cell) {
 function numberCell(cell) {
 	const row = cell.parentNode.rowIndex;
 	const col = cell.cellIndex;
-	const cellNum = answerBoard[row][col].value;
+	const cellNum = answerBoard[row][col];
 	if (cellNum === 0) {
 		cell.innerHTML = "";
 	} else {
@@ -106,22 +105,66 @@ function mineGameOverCell(cell) {
 	};
 }
 
-function animateGameOver(i, j) {
+function gameOver() {
+	showAllMinesFromTop(0, 0);
+	showAllMinesFromBot(height - 1, width - 1);
+}
+
+function showAllMinesFromTop(i, j) {
+	if (j >= width) {
+		j = 0;
+		i++;
+	}
+	if (i > Math.floor(height / 2)) {
+		showAllNumbers(0, 0);
+		return;
+	}
+
+	const cell = board.rows[i].cells[j];
+	if (isMine(answerBoard[i][j])) {
+		mineGameOverCell(cell);
+	}
+	j++;
+
+	setTimeout(function (a, b) {
+		showAllMinesFromTop(i, j);
+	}, 5);
+}
+
+function showAllMinesFromBot(i, j) {
+	if (j < 0) {
+		j = width - 1;
+		i--;
+	}
+	if (i <= Math.floor(height / 2)) {
+		return;
+	}
+
+	const cell = board.rows[i].cells[j];
+	if (isMine(answerBoard[i][j])) {
+		mineGameOverCell(cell);
+	}
+	j--;
+
+	setTimeout(function (a, b) {
+		showAllMinesFromBot(i, j);
+	}, 5);
+}
+
+function showAllNumbers(i, j) {
 	if (j >= width) {
 		j = 0;
 		i++;
 	}
 	if (i >= height) return;
 
-	const cell = document.getElementById("board").rows[i].cells[j];
-	if (answerBoard[i][j].isMine()) {
-		mineGameOverCell(cell);
-	} else {
+	const cell = board.rows[i].cells[j];
+	if (!isMine(answerBoard[i][j])) {
 		numberCell(cell);
 	}
 	j++;
 
 	setTimeout(function (a, b) {
-		animateGameOver(i, j);
-	}, 1);
+		showAllNumbers(i, j);
+	}, 3);
 }

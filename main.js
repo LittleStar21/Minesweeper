@@ -18,20 +18,16 @@ function getRandInt(minInt, maxInt) {
 }
 
 function generateBoardAnimation(i) {
-	if (i >= height) return;
+	if (i >= height) {
+		setMouseProperty();
+		return;
+	}
 
 	const row = board.insertRow(i);
 	for (let j = 0; j < width; j++) {
 		const cell = row.insertCell(j);
 		cell.setAttribute("width", "30px");
 		cell.setAttribute("height", "30px");
-		cell.onmousedown = function (event) {
-			if (event.button === 0) {
-				leftClickCell(cell);
-			} else if (event.button === 2) {
-				rightClickCell(cell);
-			}
-		};
 		defaultCell(cell);
 	}
 	i++;
@@ -39,6 +35,21 @@ function generateBoardAnimation(i) {
 	setTimeout(function (a) {
 		generateBoardAnimation(i);
 	}, 30);
+}
+
+function setMouseProperty() {
+	for (let i = 0; i < height; i++) {
+		for (let j = 0; j < width; j++) {
+			const cell = board.rows[i].cells[j];
+			cell.onmousedown = function (event) {
+				if (event.button === 0) {
+					leftClickCell(cell);
+				} else if (event.button === 2) {
+					rightClickCell(cell);
+				}
+			};
+		}
+	}
 }
 
 function leftClickCell(cell) {

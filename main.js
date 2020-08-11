@@ -1,8 +1,8 @@
 // Beginner 9x9: 10 mines
 // Intermediate 16x16: 40 mines
 // Advanced 24x24: 99 mines
-const width = 24;
-const height = 22;
+const width = 50;
+const height = 25;
 const numOfMines = 99;
 const board = document.getElementById("board");
 

@@ -1,0 +1,134 @@
+body {
+	font-family: Comic Sans MS, sans-serif;
+}
+
+.header {
+	background-color: #6d2a16;
+	/* color: #01274e; */
+	padding: 2px 12px;
+}
+
+a {
+	color: white;
+	font-size: 30px;
+	text-decoration: none;
+	padding: 20px 10px;
+}
+
+a:hover {
+	color: orange;
+	transition: all 0.8s ease;
+	cursor: pointer;
+}
+
+.timer {
+	align-items: center;
+}
+
+.mine-count {
+	float: right;
+}
+
+table {
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table,
+td {
+	border: 1px solid #ffa500;
+	border-collapse: collapse;
+}
+
+td {
+	padding: 0;
+	font-size: 16px;
+	text-align: center;
+}
+
+.hidden {
+	background-color: #dcdcdc;
+}
+
+.number {
+	color: #001440;
+	animation-name: numberAnimation;
+	animation-duration: 0.3s;
+	animation-timing-function: ease-out;
+	animation-direction: alternate;
+	animation-fill-mode: forwards;
+	animation-play-state: running;
+}
+
+@keyframes numberAnimation {
+	0% {
+		transform: scale(0.3);
+		background-color: #fed8b1;
+	}
+
+	50% {
+		transform: scale(1.2);
+		background-color: #fed8b1;
+	}
+
+	100% {
+		transform: scale(1);
+		background-color: #fed8b1;
+	}
+}
+
+.mine {
+	animation-name: mineAnimation;
+	animation-duration: 0.3s;
+	animation-timing-function: ease-out;
+	animation-direction: alternate;
+	animation-fill-mode: forwards;
+	animation-play-state: running;
+}
+
+@keyframes mineAnimation {
+	0% {
+		color: white;
+		transform: scale(0.3);
+		background-color: #ff6347;
+	}
+
+	50% {
+		color: white;
+		transform: scale(1.2);
+		background-color: #ff6347;
+	}
+
+	100% {
+		color: white;
+		transform: scale(1);
+		background-color: #ff6347;
+	}
+}
+
+.questionMark {
+	animation-name: questionMarkAnimation;
+	animation-duration: 0.3s;
+	animation-timing-function: ease-out;
+	animation-direction: alternate;
+	animation-fill-mode: forwards;
+	animation-play-state: running;
+}
+
+@keyframes questionMarkAnimation {
+	0% {
+		transform: scale(0.3);
+		background-color: #ffe3e0;
+	}
+
+	50% {
+		transform: scale(1.2);
+		background-color: #ffe3e0;
+	}
+
+	100% {
+		transform: scake(1);
+		background-color: #ffe3e0;
+	}
+}

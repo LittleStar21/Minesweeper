@@ -1,13 +1,25 @@
 const width = 30;
 const height = 16;
 const board = document.getElementById("board");
-let firstClick = true;
 
-window.onload = function () {
+window.onload = newGame;
+
+function newGame() {
 	document.addEventListener("contextmenu", (event) => event.preventDefault());
 	generateBoardAnimation(0);
-	playMinesweeper();
-};
+	setArraySize();
+	generateRandMines();
+	calculateAllNums();
+	console.log(answerBoard);
+}
+
+function isRevealed(cell) {
+	return cell.getAttribute("class") !== "hidden";
+}
+
+function isRevealedMine(i, j) {
+	return board.rows[i].cells[j].innerHTML === "*";
+}
 
 function isMine(value) {
 	return value === 9;
@@ -60,7 +72,7 @@ function leftClickCell(cell) {
 	if (isMine(answerBoard[row][col])) {
 		gameOver();
 	} else {
-		numberCell(cell);
+		openCell(row, col);
 	}
 }
 
@@ -86,11 +98,15 @@ function defaultCell(cell) {
 function numberCell(cell) {
 	const row = cell.parentNode.rowIndex;
 	const col = cell.cellIndex;
+
 	const cellNum = answerBoard[row][col];
 	if (cellNum === 0) {
 		cell.innerHTML = "";
 	} else {
 		cell.innerHTML = cellNum;
+		cell.ondblclick = function () {
+			doubleClickCell(row, col);
+		};
 	}
 	cell.setAttribute("class", "number");
 }

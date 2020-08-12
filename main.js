@@ -1,6 +1,7 @@
 const width = 30;
 const height = 16;
 const board = document.getElementById("board");
+let minesRemaining = 99;
 
 window.onload = newGame;
 
@@ -10,7 +11,13 @@ function newGame() {
 	setArraySize();
 	generateRandMines();
 	calculateAllNums();
+	updateMineCount();
 	console.log(answerBoard);
+}
+
+function updateMineCount() {
+	document.getElementById("mine-count").innerHTML =
+		"Mines: " + minesRemaining;
 }
 
 function isRevealed(cell) {
@@ -79,15 +86,19 @@ function leftClickCell(cell) {
 function rightClickCell(cell) {
 	switch (cell.innerHTML) {
 		case "":
+			if (minesRemaining <= 0) return;
 			mineCell(cell);
+			minesRemaining--;
 			break;
 		case "*":
 			questionMarkCell(cell);
 			break;
 		case "?":
 			defaultCell(cell);
+			minesRemaining++;
 			break;
 	}
+	updateMineCount();
 }
 
 function defaultCell(cell) {

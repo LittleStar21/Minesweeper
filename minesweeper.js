@@ -29,32 +29,17 @@ function calculateAllNums() {
 function countAdjacentMines(i, j) {
 	let counter = 0;
 
-	// Top
 	if (i > 0) {
 		if (isMine(answerBoard[i - 1][j])) counter++;
-
-		// Top-left
 		if (j > 0 && isMine(answerBoard[i - 1][j - 1])) counter++;
-
-		// Top-right
 		if (j < width - 1 && isMine(answerBoard[i - 1][j + 1])) counter++;
 	}
-
-	// Bottom
 	if (i < height - 1) {
 		if (isMine(answerBoard[i + 1][j])) counter++;
-
-		// Bottom-left
 		if (j > 0 && isMine(answerBoard[i + 1][j - 1])) counter++;
-
-		// Bottom-right
 		if (j < width - 1 && isMine(answerBoard[i + 1][j + 1])) counter++;
 	}
-
-	// Left
 	if (j > 0 && isMine(answerBoard[i][j - 1])) counter++;
-
-	// Right
 	if (j < width - 1 && isMine(answerBoard[i][j + 1])) counter++;
 
 	return counter;
@@ -68,32 +53,17 @@ function openCell(i, j) {
 
 	if (answerBoard[i][j] !== 0) return;
 
-	// Top
 	if (i > 0) {
 		openCell(i - 1, j);
-
-		// Top-left
 		if (j > 0) openCell(i - 1, j - 1);
-
-		// Top-right
 		if (j < width - 1) openCell(i - 1, j + 1);
 	}
-
-	// Bottom
 	if (i < height - 1) {
 		openCell(i + 1, j);
-
-		// Bottom-left
 		if (j > 0) openCell(i + 1, j - 1);
-
-		// Bottom-right
 		if (j < width - 1) openCell(i + 1, j + 1);
 	}
-
-	// Left
 	if (j > 0) openCell(i, j - 1);
-
-	// Right
 	if (j < width - 1) openCell(i, j + 1);
 }
 

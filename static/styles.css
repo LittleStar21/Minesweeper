@@ -20,6 +20,13 @@ a:hover {
 	transition: all 0.8s ease-out;
 }
 
+#mine-count {
+	float: right;
+	color: white;
+	margin-right: 50px;
+	margin-top: 7px;
+}
+
 .timer {
 	align-items: center;
 }

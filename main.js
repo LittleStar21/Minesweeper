@@ -3,16 +3,31 @@ const height = 16;
 const board = document.getElementById("board");
 let minesRemaining = 99;
 
-window.onload = newGame;
+// For spiral
+let leftBorder = -1,
+	rightBorder = width,
+	topBorder = -1,
+	bottomBorder = height;
 
-function newGame() {
+window.onload = startGame;
+
+function startGame() {
+	leftBorder = -1;
+	rightBorder = width;
+	topBorder = -1;
+	bottomBorder = height;
 	document.addEventListener("contextmenu", (event) => event.preventDefault());
 	generateBoardAnimation(0);
 	setArraySize();
 	generateRandMines();
 	calculateAllNums();
 	updateMineCount();
-	console.log(answerBoard);
+}
+
+function newGame() {
+	minesRemaining = 99;
+	clearBoard();
+	startGame();
 }
 
 function updateMineCount() {
@@ -34,6 +49,12 @@ function isMine(value) {
 
 function getRandInt(minInt, maxInt) {
 	return Math.floor(Math.random() * (maxInt - minInt + 1) + minInt);
+}
+
+function clearBoard() {
+	for (let i = 0; i < height; i++) {
+		board.deleteRow(0);
+	}
 }
 
 function generateBoardAnimation(i) {
@@ -194,18 +215,15 @@ function showAllMinesFromBot(i, j) {
 }
 
 // 0: right, 1: down, 2: left, 3: up
-let leftBorder = -1,
-	rightBorder = width,
-	topBorder = -1,
-	bottomBorder = height;
-function showNumberSpiral(i, j, x, y, dir1, dir2) {
-	if (leftBorder >= rightBorder && topBorder >= bottomBorder) {
+function showNumberSpiral(m, n, x, y, dir1, dir2) {
+	if (leftBorder + 10 >= rightBorder && topBorder + 10 >= bottomBorder) {
 		return;
 	}
+	console.log(leftBorder, rightBorder, topBorder, bottomBorder);
 
-	const cell1 = board.rows[i].cells[j];
+	const cell1 = board.rows[m].cells[n];
 	const cell2 = board.rows[x].cells[y];
-	if (!isMine(answerBoard[i][j])) {
+	if (!isMine(answerBoard[m][n])) {
 		numberCell(cell1);
 	}
 	if (!isMine(answerBoard[x][y])) {
@@ -213,26 +231,26 @@ function showNumberSpiral(i, j, x, y, dir1, dir2) {
 	}
 
 	if (dir1 === 0) {
-		j++;
-		if (j === rightBorder - 1) {
+		n++;
+		if (n === rightBorder - 1) {
 			topBorder++;
 			dir1 = 1;
 		}
 	} else if (dir1 === 1) {
-		i++;
-		if (i === bottomBorder - 1) {
+		m++;
+		if (m === bottomBorder - 1) {
 			rightBorder--;
 			dir1 = 2;
 		}
 	} else if (dir1 === 2) {
-		j--;
-		if (j === leftBorder + 1) {
+		n--;
+		if (n === leftBorder + 1) {
 			bottomBorder--;
 			dir1 = 3;
 		}
 	} else {
-		i--;
-		if (i === topBorder + 1) {
+		m--;
+		if (m === topBorder + 1) {
 			leftBorder++;
 			dir1 = 0;
 		}
@@ -265,6 +283,6 @@ function showNumberSpiral(i, j, x, y, dir1, dir2) {
 	}
 
 	setTimeout(function (a, b, c, d, e, f) {
-		showNumberSpiral(i, j, x, y, dir1, dir2);
+		showNumberSpiral(m, n, x, y, dir1, dir2);
 	}, 3);
 }

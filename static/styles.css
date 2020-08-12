@@ -1,8 +1,11 @@
+html,
 body {
+	height: 100%;
 	font-family: Comic Sans MS, sans-serif;
 }
 
 .header {
+	display: flex;
 	background-color: #6d2a16;
 	padding: 2px 12px;
 }
@@ -21,18 +24,31 @@ a:hover {
 }
 
 #mine-count {
-	float: right;
 	color: white;
-	margin-right: 50px;
-	margin-top: 7px;
+	margin-top: 18px;
+	margin-left: 40%;
 }
 
-.timer {
-	align-items: center;
+#new-game {
+	height: 40px;
+	font-size: 16px;
+	font-family: Comic Sans MS, sans-serif;
+	border: none;
+	border-radius: 8px;
+	margin-top: 10px;
+	margin-left: 32%;
+	background-color: #f4511e;
+	color: white;
+	padding: 5px 10px;
+	cursor: pointer;
+	transition: all 0.5s ease;
 }
 
-.mine-count {
-	float: right;
+#new-game:hover {
+	transform: scale(1.2);
+	background-color: #fed8b1;
+	color: #f4511e;
+	transition: all 0.5s ease;
 }
 
 table {

@@ -3,20 +3,12 @@ const height = 16;
 const board = document.getElementById("board");
 let minesRemaining = 99;
 let firstMove = true;
-
-// For spiral
-let leftBorder = -1,
-	rightBorder = width,
-	topBorder = -1,
-	bottomBorder = height;
+let direction = 0;
 
 window.onload = startGame;
 
 function startGame() {
-	leftBorder = -1;
-	rightBorder = width;
-	topBorder = -1;
-	bottomBorder = height;
+	direction = 0;
 	firstMove = true;
 	document.addEventListener("contextmenu", (event) => event.preventDefault());
 	generateBoardAnimation(0);
@@ -186,7 +178,7 @@ function showAllMinesFromTop(i, j) {
 		i++;
 	}
 	if (i > Math.floor(height / 2)) {
-		showNumberSpiral(0, 0, height - 1, width - 1, 0, 2);
+		showAllNumber(0, 0);
 		return;
 	}
 
@@ -221,74 +213,34 @@ function showAllMinesFromBot(i, j) {
 	}, 5);
 }
 
-// 0: right, 1: down, 2: left, 3: up
-function showNumberSpiral(m, n, x, y, dir1, dir2) {
-	if (leftBorder + 10 >= rightBorder && topBorder + 10 >= bottomBorder) {
+// 0: right, 1: left
+function showAllNumber(i, j) {
+	if (i >= height) {
 		return;
 	}
-
-	const cell1 = board.rows[m].cells[n];
-	const cell2 = board.rows[x].cells[y];
-	if (!isMine(answerBoard[m][n])) {
-		numberCell(cell1);
-	}
-	if (!isMine(answerBoard[x][y])) {
-		numberCell(cell2);
+	
+	const cell = board.rows[i].cells[j];
+	if (!isMine(answerBoard[i][j])) {
+		numberCell(cell);
 	}
 
-	if (dir1 === 0) {
-		n++;
-		if (n === rightBorder - 1) {
-			topBorder++;
-			dir1 = 1;
-		}
-	} else if (dir1 === 1) {
-		m++;
-		if (m === bottomBorder - 1) {
-			rightBorder--;
-			dir1 = 2;
-		}
-	} else if (dir1 === 2) {
-		n--;
-		if (n === leftBorder + 1) {
-			bottomBorder--;
-			dir1 = 3;
+	if (direction == 0) {
+		j++;
+		if (j >= width) {
+			direction = 1;
+			j = width - 1;
+			i++;
 		}
 	} else {
-		m--;
-		if (m === topBorder + 1) {
-			leftBorder++;
-			dir1 = 0;
+		j--;
+		if (j < 0) {
+			direction = 0;
+			j = 0;
+			i++;
 		}
 	}
 
-	if (dir2 === 0) {
-		y++;
-		if (y === rightBorder - 1) {
-			topBorder++;
-			dir2 = 1;
-		}
-	} else if (dir2 === 1) {
-		x++;
-		if (x === bottomBorder - 1) {
-			rightBorder--;
-			dir2 = 2;
-		}
-	} else if (dir2 === 2) {
-		y--;
-		if (y === leftBorder + 1) {
-			bottomBorder--;
-			dir2 = 3;
-		}
-	} else {
-		x--;
-		if (x === topBorder + 1) {
-			leftBorder++;
-			dir2 = 0;
-		}
-	}
-
-	setTimeout(function (a, b, c, d, e, f) {
-		showNumberSpiral(m, n, x, y, dir1, dir2);
-	}, 3);
+	setTimeout(function() {
+		showAllNumber(i, j);
+	}, 3);	
 }

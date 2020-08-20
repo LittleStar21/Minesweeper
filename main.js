@@ -2,6 +2,7 @@ const width = 30;
 const height = 16;
 const board = document.getElementById("board");
 let minesRemaining = 99;
+let firstMove = true;
 
 // For spiral
 let leftBorder = -1,
@@ -16,11 +17,10 @@ function startGame() {
 	rightBorder = width;
 	topBorder = -1;
 	bottomBorder = height;
+	firstMove = true;
 	document.addEventListener("contextmenu", (event) => event.preventDefault());
 	generateBoardAnimation(0);
-	setArraySize();
 	generateRandMines();
-	calculateAllNums();
 	updateMineCount();
 }
 
@@ -97,6 +97,13 @@ function leftClickCell(cell) {
 
 	const row = cell.parentNode.rowIndex;
 	const col = cell.cellIndex;
+
+	while (firstMove && isMine(answerBoard[row][col])) {
+		generateRandMines();
+	}
+	firstMove = false;
+
+
 	if (isMine(answerBoard[row][col])) {
 		gameOver();
 	} else {
@@ -219,7 +226,6 @@ function showNumberSpiral(m, n, x, y, dir1, dir2) {
 	if (leftBorder + 10 >= rightBorder && topBorder + 10 >= bottomBorder) {
 		return;
 	}
-	console.log(leftBorder, rightBorder, topBorder, bottomBorder);
 
 	const cell1 = board.rows[m].cells[n];
 	const cell2 = board.rows[x].cells[y];

@@ -5,17 +5,6 @@ const numOfMines = 99;
 let numOfNotMines = width * height - numOfMines;
 let answerBoard = [];
 
-function setArraySize() {
-	answerBoard = [];
-	for (let i = 0; i < height; i++) {
-		let tempRow = [];
-		for (let j = 0; j < width; j++) {
-			tempRow.push(-1);
-		}
-		answerBoard.push(tempRow);
-	}
-}
-
 function calculateAllNums() {
 	for (let i = 0; i < height; i++) {
 		for (let j = 0; j < width; j++) {
@@ -135,6 +124,15 @@ function doubleClickCell(i, j) {
 }
 
 function generateRandMines() {
+	answerBoard = [];
+	for (let i = 0; i < height; i++) {
+		let tempRow = [];
+		for (let j = 0; j < width; j++) {
+			tempRow.push(-1);
+		}
+		answerBoard.push(tempRow);
+	}
+
 	let curNumOfMines = 0;
 	while (curNumOfMines < numOfMines) {
 		const i = getRandInt(0, height - 1);
@@ -146,4 +144,5 @@ function generateRandMines() {
 		answerBoard[i][j] = 9;
 		curNumOfMines++;
 	}
+	calculateAllNums();
 }

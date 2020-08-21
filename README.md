@@ -9,6 +9,7 @@ A number represents how many mines are adjacent (all 8 neighbors) to that number
 ## How to play
 * Left click to open a cell.
 * Right click to mark that a cell contains a mine.
+* Double click to open all neighboring cells if all the mines nearby have been exposed.
 
 ## Image
 ![alt Minesweeper](https://github.com/LittleStar21/Minesweeper/blob/master/img/minesweeper.png)

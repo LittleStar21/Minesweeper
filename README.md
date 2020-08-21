@@ -11,4 +11,4 @@ A number represents how many mines are adjacent (all 8 neighbors) to that number
 * Right click to mark that a cell contains a mine.
 
 ## Image
-![alt Minesweeper](https://github.com/LittleStar21/SortingVisualizer/blob/master/img/minesweeper.png)
+![alt Minesweeper](https://github.com/LittleStar21/Minesweeper/blob/master/img/minesweeper.png)
